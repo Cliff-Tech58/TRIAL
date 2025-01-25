@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participant GWK Points and Debts</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(45deg, #74ebd5, #ACB6E5);
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label, input[type="text"], input[type="submit"] {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    label {
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="submit"] {
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      font-size: 1.1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #218838;
+    }
+
+    .result {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .result h2 {
+      font-size: 1.5em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 1s infinite linear;
+      display: none;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      text-align: center;
+      color: white;
+      font-size: 1.2em;
+      display: none;
+    }
+
+    .performance-image {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Participant GWK Points & Debts</h1>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" id="loadingSpinner"></div>
+  <div class="loading-text" id="loadingText">Fetching your data...</div>
+
+  <!-- Participant Form -->
+  <form id="participantForm">
+    <label for="uniqueId">Unique ID:</label>
+    <input type="text" id="uniqueId" name="uniqueId" placeholder="Enter your unique ID" required>
+    <input type="submit" value="Check GWK Points and Debts">
+  </form>
+
+  <!-- Result Section -->
+  <div class="result" id="resultDiv">
+    <h2>GWK Points and Debts</h2>
+    <p id="points"></p>
+    <p id="debts"></p>
+    <img id="performanceImage" class="performance-image" src="" alt="Performance Image" style="display: none;">
+  </div>
+
+  <script>
+    // Mock data for the participants
+    const participants = {
+      "101": { points: 75, debts: "No debts" },
+      "102": { points: 60, debts: "50 sh" },
+      "103": { points: 85, debts: "No debts" }
+    };
+
+    const form = document.getElementById('participantForm');
+    const resultDiv = document.getElementById('resultDiv');
+    const pointsDisplay = document.getElementById('points');
+    const debtsDisplay = document.getElementById('debts');
+    const performanceImage = document.getElementById('performanceImage');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const loadingText = document.getElementById('loadingText');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const uniqueId = document.getElementById('uniqueId').value.trim();
+
+      // Hide previous result and show loading spinner
+      resultDiv.style.display = 'none';
+      loadingSpinner.style.display = 'block';
+      loadingText.style.display = 'block';
+
+      // Simulate data fetching
+      setTimeout(function() {
+        loadingSpinner.style.display = 'none';
+        loadingText.style.display = 'none';
+
+        // Check if the ID exists in the participants' data
+        if (participants[uniqueId]) {
+          const participantData = participants[uniqueId];
+          pointsDisplay.innerText = `GWK Points: ${participantData.points}`;
+          debtsDisplay.innerText = `Debts: ${participantData.debts}`;
+
+          // Show the result section
+          resultDiv.style.display = 'block';
+
+          // Set the participant's performance image from the 'image' subfolder
+          const imagePath = `image/participants.png`;
+          performanceImage.src = imagePath;
+          performanceImage.style.display = 'block';  // Show the image
+        } else {
+          alert("Participant ID not found!");
+        }
+      }, 2000); // Simulated 2-second loading time
+    });
+  </script>
+</body>
+</html>
